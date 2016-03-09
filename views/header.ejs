@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title><%= title %></title>
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap-modal.css">
+	<link rel='stylesheet' href='/stylesheets/screen.css' />
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<script language="javascript">  
+	function login(){
+		$.post('/login',{username:$("#lousername").val(),password:$("#lopassword").val()},function(result){
+			document.getElementById('lomessage').innerHTML = result;
+			if(result == '<div class="alert alert-success">登陆成功</div>'){
+				setTimeout(function(){window.location.href="/";},1000); 
+			}
+		});
+	}
+	function register(){
+		var re = /^[0-9A-Za-z]{4,}$/;
+		if(re.test($("#repassword").val())){
+			var ren = /^[A-Za-z0-9]+$/;
+			if(ren.test($("#reusername").val())){
+				$.post('/register',{username:$("#reusername").val(),password:$("#repassword").val(),confirmPassword:$("#confirmPassword").val()},function(result){
+					document.getElementById('remessage').innerHTML = result;
+					if(result =='<div class="alert alert-success">注册成功</div>'){
+						setTimeout(function(){window.location.href="/";},1000); 
+					}
+				});
+			}
+			else
+			{
+				document.getElementById('remessage').innerHTML = '<div class="alert alert-warning">用户名需要由数字或字母组成</div>';
+			}
+		}
+		else
+		{
+			document.getElementById('remessage').innerHTML = '<div class="alert alert-warning">密码至少为4个以上的数字或字母</div>';
+		}
+		
+	}
+	</script>
+</head>
+<body screen_capture_injected="true">
+	<div class="container" >
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">首页</a>
+			</div>
+			<div>
+				<ul class="nav navbar-nav">
+					<ul class="breadcrumb list-inline" style= "vertical-align: Middle;margin-bottom: 10px;margin-top: 10px;border-bottom-width: 5px;">
+						<%if(url){url.forEach(function(a,index){%>
+						<%if(url.length == index+1){%>
+						<li class="active"><%= a[1] %></li>
+						<%}else{%>
+						<li><a href=<%= a[0] %>><%= a[1] %></a></li>
+						<%}})}%>
+					</ul>
+
+				</div>
+				<div>
+
+					<ul class="nav navbar-nav navbar-right">
+						<% if (!user) {%>
+						<li><a data-toggle="modal"  data-target="#login">登陆</a></li>
+						<li><a data-toggle="modal"  data-target="#register">注册</a></li>
+						<li><p>&nbsp&nbsp&nbsp&nbsp</p></li>
+						<% }else{ %>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<%= user%>
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="/logout">注销</a></li>
+							</ul>
+						</li>
+						<li><p>&nbsp&nbsp&nbsp&nbsp</p></li>
+						<%}%>
+					</ul>
+				</div>
+			</nav>
+
+
+			<div class="modal fade" id="login" tabindex="-1" role="dialog" 
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" 
+						data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Please Login</h4>
+				</div>
+				<div class="modal-body">
+					<form role='form' class="form-horizontal"  method="post">
+						<div class="form-group">
+							<div id='lomessage'></div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-3">
+								<label for="username" class="control-label">用户名:</label>
+							</div>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="lousername" id="lousername" placeholder='Enter The Username'>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-3">
+								<label for="password" class="control-label">密码:</label>
+							</div>
+							<div class="col-md-9">
+								<input type="password" class="form-control" name="lopassword" id="lopassword" placeholder='Enter The Password'>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-info" type="button" onclick = "login()">登陆</button>
+					<button class="btn btn-default" type="reset">清除</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>
+	<div class="modal fade" id="register" tabindex="-1" role="dialog" 
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" 
+				data-dismiss="modal" aria-hidden="true">
+				&times;
+			</button>
+			<h4 class="modal-title" id="myModalLabel">
+				Please Register
+			</h4>
+		</div>
+		<div class="modal-body">
+			<form role='form' class="form-horizontal"  method="post">
+				<div class="form-group">
+					<div id='remessage'></div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-md-3">
+						<label for="username" class="control-label">用户名:</label>
+					</div>
+					<div class="col-md-9">
+						<input type="text" class="form-control" name="reusername" id="reusername" placeholder='Enter The Username'>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-3">
+						<label for="password" class="control-label">密码:</label>
+					</div>
+					<div class="col-md-9">
+						<input type="password" class="form-control" name="repassword" id="repassword" placeholder='Enter The Password'>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-3">
+						<label for="confirmPassword" class="control-label">确认密码:</label>
+					</div>
+					<div class="col-md-9">
+						<input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder='Confirm The Password'>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-info" type="button" onclick = "register()">注册</button>
+			<button class="btn btn-default" type="reset">清除</button>
+		</div>
+	</div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div>

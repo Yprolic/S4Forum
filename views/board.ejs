@@ -1,0 +1,36 @@
+<% include header.ejs %>
+    <h3><%= board.name %></h3>
+    <% cards.forEach(function (card) { %>
+  <article class="post">
+
+    <div class="post-head">
+        <h1 class="post-title"><a href=/<%= board.title %>/<%= card._id %>><%= card.title %></a></h1>
+        <div class="post-meta">
+            <span class="author">作者：<a><%= card.userName %></a></span> •
+            <time class="post-date" datetime=<%= card.create_date%> title=<%= card.create_date%>><%= card.create_date%></time>
+        </div>
+    </div>
+    <div class="post-content">
+        <p><%= card.content.substr(0, 200)%></p>
+    </div>
+    <div class="post-permalink">
+        <a href=/<%= board.title %>/<%= card._id %> class="btn btn-default">阅读全文</a>
+    </div>
+
+</article>
+<% }) %>
+<% if(user) { %>
+    <form role="form" method="post">
+  <div class="form-group">
+    <label for="name">发帖</label>
+    <textarea class="form-control" rows="1" name = "title"></textarea>
+    <textarea class="form-control" rows="5" name = "content"></textarea>
+  </div>
+  <button type="submit" class="btn btn-success">发帖</button>
+</form>
+<% } %>
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  </div>
+  </body>
+</html>

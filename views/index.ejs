@@ -1,0 +1,25 @@
+<% include header.ejs %>
+<div class="container">
+<% boards.forEach(function (board,index) { %>
+<div class="container " style="height: 150px;width: 150px;margin-left: 20px;margin-top: 20px;float:left"> 
+	<%if(index%4==0){%>
+	<div class="btn btn-warning" style="height: 150px;width: 150px" onclick="location.href='<%= board.title %>'">
+		<%}else if(index%4==1){%>
+		<div class="btn btn-danger" style="height: 150px;width: 150px" onclick="location.href='<%= board.title %>'">
+			<%}else if(index%4==2){%>
+			<div class="btn btn-success" style="height: 150px;width: 150px" onclick="location.href='<%= board.title %>'">
+				<%}else{%>
+				<div class="btn btn-info" style="height: 150px;width: 150px" onclick="location.href='<%= board.title %>'">
+					<%}%>
+				<p style="line-height: 130px"><%= board.name %></a>
+			</div>
+		</div>
+    
+<% }); %>
+</div>
+</p>
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  </div>
+  </body>
+</html>
